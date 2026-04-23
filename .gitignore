@@ -1,0 +1,7 @@
+JobFinder/bin/
+JobFinder/obj/
+JobFinder/run.log
+JobFinder/run.err.log
+JobFinder/Data/*.db-shm
+JobFinder/Data/*.db-wal
+.vs/

@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: jobfinder
+    runtime: docker
+    plan: free
+    autoDeploy: true
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ConnectionStrings__DefaultConnection
+        value: Data Source=/app/Data/JobFinder.db
+    disk:
+      name: jobfinder-data
+      mountPath: /app/Data
+      sizeGB: 1

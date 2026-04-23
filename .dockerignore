@@ -1,0 +1,13 @@
+.git
+.gitignore
+.vs
+README.md
+image_0.png.png
+image_1.png.png
+image_2.png.png
+JobFinder/bin
+JobFinder/obj
+JobFinder/run.log
+JobFinder/run.err.log
+JobFinder/Data/*.db-shm
+JobFinder/Data/*.db-wal
