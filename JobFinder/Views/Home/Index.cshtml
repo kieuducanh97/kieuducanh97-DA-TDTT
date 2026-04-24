@@ -1,0 +1,96 @@
+@model JobFinder.ViewModels.HomeIndexViewModel
+@{
+    ViewData["Title"] = "Trang chủ";
+    var slides = new[]
+    {
+        new { Icon = "🚀", Title = "Tìm kiếm Công việc Mơ ước của Bạn", Subtitle = "Hàng ngàn cơ hội tuyển dụng chất lượng cao đang chờ bạn khám phá." },
+        new { Icon = "💼", Title = "Kết nối Doanh nghiệp và Nhân tài", Subtitle = "Tra cứu vị trí phù hợp theo kỹ năng, địa điểm và mức lương mong muốn." },
+        new { Icon = "✨", Title = "Ứng tuyển Nhanh, Theo dõi Dễ dàng", Subtitle = "Lưu việc làm yêu thích và nắm bắt deadline quan trọng chỉ trong vài cú nhấp." }
+    };
+}
+
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-slider" data-slider>
+            @for (var i = 0; i < slides.Length; i++)
+            {
+                var slide = slides[i];
+                <article class="hero-slide @(i == 0 ? "is-active" : string.Empty)" data-slide>
+                    <button class="slider-arrow slider-arrow--left" type="button" data-slide-prev aria-label="Slide trước">‹</button>
+                    <div class="hero-copy">
+                        <span class="hero-icon">@slide.Icon</span>
+                        <h1>@slide.Title</h1>
+                        <p>@slide.Subtitle</p>
+                        <a class="primary-button" href="#job-list">Duyệt Việc làm</a>
+                    </div>
+                    <button class="slider-arrow slider-arrow--right" type="button" data-slide-next aria-label="Slide tiếp">›</button>
+                </article>
+            }
+            <div class="hero-dots">
+                @for (var i = 0; i < slides.Length; i++)
+                {
+                    <button type="button" class="hero-dot @(i == 0 ? "is-active" : string.Empty)" data-slide-dot="@i" aria-label="Đi tới slide @(i + 1)"></button>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="search-section">
+    <div class="container">
+        <form method="get" asp-controller="Home" asp-action="Index" class="search-form">
+            <input type="text" name="searchTerm" value="@Model.SearchTerm" placeholder="Tìm kiếm việc làm..." />
+            <button type="submit" aria-label="Tìm kiếm">🔎</button>
+        </form>
+    </div>
+</section>
+
+<section class="jobs-section" id="job-list">
+    <div class="container">
+        <div class="section-heading">
+            <h2>💼 Danh sách Việc làm</h2>
+            @if (!string.IsNullOrWhiteSpace(Model.SearchTerm))
+            {
+                <p>Kết quả cho từ khóa: <strong>@Model.SearchTerm</strong></p>
+            }
+            else
+            {
+                <p>Khám phá các cơ hội nổi bật từ doanh nghiệp uy tín trên toàn quốc.</p>
+            }
+        </div>
+
+        @if (Model.Jobs.Count == 0)
+        {
+            <div class="empty-state">
+                <h3>Chưa tìm thấy việc làm phù hợp</h3>
+                <p>Hãy thử lại với từ khóa khác hoặc quay về danh sách tất cả vị trí đang mở.</p>
+            </div>
+        }
+        else
+        {
+            <div class="job-grid" data-load-more-container>
+                @foreach (var job in Model.Jobs)
+                {
+                    <article class="job-card" data-job-card>
+                        <div class="job-card__thumb">
+                            <span>@job.CompanyLogoUrl</span>
+                        </div>
+                        <div class="job-card__body">
+                            <span class="job-card__company">@job.Company</span>
+                            <h3>@job.Title</h3>
+                            <p>@job.Description</p>
+                            <div class="job-card__meta">
+                                <span>@job.Location</span>
+                                <span>@job.Salary</span>
+                            </div>
+                            <a class="job-card__link" asp-controller="Job" asp-action="Details" asp-route-id="@job.Id">Xem chi tiết</a>
+                        </div>
+                    </article>
+                }
+            </div>
+            <div class="load-more-wrap">
+                <button type="button" class="secondary-button" data-load-more>Tải thêm</button>
+            </div>
+        }
+    </div>
+</section>

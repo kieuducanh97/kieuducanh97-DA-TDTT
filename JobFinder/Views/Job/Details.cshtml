@@ -1,0 +1,112 @@
+@model JobFinder.Models.Job
+@{
+    ViewData["Title"] = Model.Title;
+    var responsibilities = Model.Responsibilities.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    var requirements = Model.Requirements.Split('|', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+}
+
+<section class="job-detail-page">
+    <div class="container">
+        <nav class="breadcrumb-nav" aria-label="breadcrumb">
+            <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+            <span>›</span>
+            <a asp-controller="Job" asp-action="Index">Việc làm</a>
+            <span>›</span>
+            <span>@Model.Title</span>
+        </nav>
+
+        <a class="back-link" asp-controller="Home" asp-action="Index">← Quay lại danh sách</a>
+
+        <div class="detail-grid">
+            <article class="detail-card">
+                <div class="detail-head">
+                    <div>
+                        <h1>@Model.Title</h1>
+                        <div class="detail-badges">
+                            <span class="pill">@Model.Type</span>
+                            <span class="pill pill--ghost">🔖 Lưu</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-summary">
+                    <div><strong>🧩 Lĩnh vực</strong><span>Kỹ thuật phần mềm</span></div>
+                    <div><strong>📍 Địa điểm</strong><span>@Model.Location</span></div>
+                    <div><strong>💵 Mức lương</strong><span>@Model.Salary</span></div>
+                    <div><strong>🕒 Ngày đăng</strong><span>@Model.PostedDate.ToString("dd/MM/yyyy")</span></div>
+                </div>
+
+                <hr />
+
+                <section class="detail-section">
+                    <h2>Mô tả công việc</h2>
+                    <p>@Model.Description</p>
+                </section>
+
+                <section class="detail-section">
+                    <h2>Nhiệm vụ chính</h2>
+                    <ul class="detail-list">
+                        @foreach (var item in responsibilities)
+                        {
+                            <li>@item</li>
+                        }
+                    </ul>
+                </section>
+
+                <section class="detail-section">
+                    <h2>Yêu cầu ứng viên</h2>
+                    <ul class="detail-list">
+                        @foreach (var item in requirements)
+                        {
+                            <li>@item</li>
+                        }
+                    </ul>
+                </section>
+
+                <div class="detail-actions">
+                    <a class="primary-button" asp-controller="Account" asp-action="Login">Ứng tuyển Ngay</a>
+                    <button type="button" class="secondary-button">Lưu Việc làm</button>
+                </div>
+            </article>
+
+            <aside class="sidebar-stack">
+                <section class="sidebar-card company-card">
+                    <h3>Công ty</h3>
+                    <div class="company-profile">
+                        <div class="company-logo">@Model.CompanyLogoUrl</div>
+                        <div>
+                            <strong>@Model.Company</strong>
+                            <span>50-200 nhân sự</span>
+                        </div>
+                    </div>
+                    <ul>
+                        <li>🌐 www.jobfinder.vn</li>
+                        <li>✉ hr@jobfinder.vn</li>
+                        <li>📌 @Model.Location</li>
+                    </ul>
+                </section>
+
+                <section class="sidebar-card">
+                    <h3>Điểm nhấn việc làm</h3>
+                    <ul class="highlight-list">
+                        <li><strong>Loại hình</strong><span>@Model.Type</span></li>
+                        <li><strong>Kinh nghiệm</strong><span>@Model.Experience</span></li>
+                        <li><strong>Cấp bậc</strong><span>@Model.Level</span></li>
+                        <li><strong>Làm việc</strong><span>@(Model.IsRemote ? "Hybrid / Remote" : "Tại văn phòng")</span></li>
+                        <li><strong>Hạn nộp</strong><span>@Model.Deadline.ToString("dd/MM/yyyy")</span></li>
+                    </ul>
+                </section>
+
+                <section class="sidebar-card">
+                    <h3>Chia sẻ việc làm</h3>
+                    <div class="share-links">
+                        <a href="#">f</a>
+                        <a href="#">in</a>
+                        <a href="#">tw</a>
+                        <a href="#">⤴</a>
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </div>
+</section>
